@@ -1,0 +1,19 @@
+{
+  "name": "geggleto/slimacl",
+  "description": "Slim 3 Zend ACL",
+  "authors": [
+    {
+      "name": "Glenn Eggleton",
+      "email": "geggleto@gmail.com"
+    }
+  ],
+  "autoload" : {
+    "PSR-4" : {
+      "Geggleto\\Acl\\" : "src"
+    }
+  },
+  "require": {
+    "zendframework/zend-permissions-acl": "2.5.1",
+    "psr/http-message": "1.0"
+  }
+}

@@ -1,0 +1,10 @@
+.DS_Store
+composer.lock
+phpunit.xml
+.idea
+clover.xml
+cache/
+config/env.php
+tests/_output/*
+codecept.phar
+vendor
