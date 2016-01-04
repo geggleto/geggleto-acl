@@ -1,6 +1,6 @@
 {
-  "name": "geggleto/slimacl",
-  "description": "Slim 3 Zend ACL",
+  "name": "geggleto/psr7-acl",
+  "description": "PSR-7 Zend ACL",
   "authors": [
     {
       "name": "Glenn Eggleton",
