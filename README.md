@@ -20,11 +20,14 @@ $aclList = [
 ];
 */
 
-$app->add(\Geggleto\Acl\AclRepository($_SESSION['user_id'], [
-"resources" => ['/'],
-"roles" => ['guest'],
-"assignments" => [
-  "allow" => [ "guest" => [ '/' ]] 
-]
+$app->add(\Geggleto\Acl\AclRepository($_SESSION['user_id'], 
+[
+  "resources" => ['/'],
+  "roles" => ['guest'],
+  "assignments" => [
+    "allow" => [ 
+      "guest" => [ '/' ]
+    ] 
+  ]
 ]));
 ```
