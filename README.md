@@ -1,5 +1,6 @@
 # geggleto-acl
 Provides a ACL repository and Middleware using Zend/Permissions/Acl library
+PSR-7 Compliant
 
 # Usage Example
 
@@ -43,3 +44,5 @@ $app->add(\Geggleto\Acl\AclRepository("guest",
     ]
 ]));
 ```
+
+# See Unit test class for more detailed usage
