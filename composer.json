@@ -13,6 +13,11 @@
       "Stubs\\" : "tests/Stubs"
     }
   },
+  "autoload-dev" : {
+    "psr-4" : {
+      "Stubs\\" : "tests/Stubs"
+    }
+  },
   "require": {
     "zendframework/zend-permissions-acl": "2.5.1",
     "psr/http-message": "1.0"
