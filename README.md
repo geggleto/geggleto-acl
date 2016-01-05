@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/geggleto/geggleto-acl.svg)](https://travis-ci.org/geggleto/geggleto-acl)
+
 # geggleto-acl
 Provides a ACL repository and Middleware using Zend/Permissions/Acl library
 PSR-7 Compliant
