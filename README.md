@@ -6,28 +6,40 @@ Provides a ACL repository and Middleware using Zend/Permissions/Acl library
 ```php
 //Define or Pull your ACL's into the following format
 /*
-$aclList = [
-  "resources" => [list of resources names]
-  "roles" => [list of role names]
-  "assignments" => [
-       "allow" => [
-           "rolename" => [list of resources]
-       ]
-       "deny" => [
-           "rolename" => [list of resources]
-       ]
-  ]
-];
+        $aclList = [
+            "resources" => ["/", "/no", "/yes"],
+            "roles" => ["guest", "user1", "user2"],
+            "assignments" => [
+                "allow" => [
+                    "guest" => ["/"],
+                    "user1" => ["/", "/no"],
+                    "user2" => ["/", "/yes"]
+                ],
+                "deny" => [
+                    "guest" => ["/no", "/yes"],
+                    "user1" => ["/yes"],
+                    "user2" => ["/no"]
+                ]
+            ]
+        ];
 */
 
-$app->add(\Geggleto\Acl\AclRepository($_SESSION['user_id'], 
+//In Slim v3
+$app->add(\Geggleto\Acl\AclRepository("guest", 
 [
-  "resources" => ['/'],
-  "roles" => ['guest'],
-  "assignments" => [
-    "allow" => [ 
-      "guest" => [ '/' ]
-    ] 
-  ]
+    "resources" => ["/", "/no", "/yes"],
+    "roles" => ["guest", "user1", "user2"],
+    "assignments" => [
+        "allow" => [
+            "guest" => ["/"],
+            "user1" => ["/", "/no"],
+            "user2" => ["/", "/yes"]
+        ],
+        "deny" => [
+            "guest" => ["/no", "/yes"],
+            "user1" => ["/yes"],
+            "user2" => ["/no"]
+        ]
+    ]
 ]));
 ```
