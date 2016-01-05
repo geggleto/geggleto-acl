@@ -8,12 +8,15 @@
     }
   ],
   "autoload" : {
-    "PSR-4" : {
+    "psr-4" : {
       "Geggleto\\Acl\\" : "src"
     }
   },
   "require": {
     "zendframework/zend-permissions-acl": "2.5.1",
     "psr/http-message": "1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "5.1.3"
   }
 }

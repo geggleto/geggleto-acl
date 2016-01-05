@@ -57,13 +57,13 @@ class AclRepository
 
         if (isset($aclList['resources'])) {
             foreach ($aclList['resources'] as $resource) {
-                $this->makeResource($resource);
+                $this->acl->addResource($this->makeResource($resource));
             }
         }
 
-        if (isset($aclList['role'])) {
-            foreach ($aclList['role'] as $role) {
-                $this->makeResource($role);
+        if (isset($aclList['roles'])) {
+            foreach ($aclList['roles'] as $role) {
+                $this->acl->addRole($this->makeRole($role));
             }
         }
 
