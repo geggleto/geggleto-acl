@@ -19,10 +19,10 @@
     }
   },
   "require": {
-    "zendframework/zend-permissions-acl": "2.5.1",
-    "psr/http-message": "1.0"
+    "zendframework/zend-permissions-acl": "^2.5",
+    "psr/http-message": "^1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "5.1.3"
+    "phpunit/phpunit": "^5.1"
   }
 }
