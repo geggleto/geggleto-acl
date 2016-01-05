@@ -1,8 +1,8 @@
 <?php
 use Geggleto\Acl\AclRepository;
-use Geggleto\Acl\Stubs\RequestStub;
-use Geggleto\Acl\Stubs\ResponseStub;
-use Geggleto\Acl\Stubs\UriStub;
+use Stubs\RequestStub;
+use Stubs\ResponseStub;
+use Stubs\UriStub;
 
 /**
  * Created by PhpStorm.

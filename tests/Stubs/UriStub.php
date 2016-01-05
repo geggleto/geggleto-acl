@@ -6,7 +6,7 @@
  * Time: 11:14 AM
  */
 
-namespace Geggleto\Acl\Stubs;
+namespace Stubs;
 
 
 use Psr\Http\Message\UriInterface;

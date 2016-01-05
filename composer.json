@@ -9,7 +9,8 @@
   ],
   "autoload" : {
     "psr-4" : {
-      "Geggleto\\Acl\\" : "src"
+      "Geggleto\\Acl\\" : "src",
+      "Stubs\\" : "tests/Stubs"
     }
   },
   "require": {
