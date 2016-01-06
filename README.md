@@ -28,7 +28,8 @@ PSR-7 Compliant
 */
 
 //In Slim v3
-$app->add(\Geggleto\Acl\AclRepository("guest", 
+$app->add(\Geggleto\Acl\AclRepository(["guest"], 
+//This should be in a nice php file by itself for easy inclusion... include '/path/to/acl/definition.php'
 [
     "resources" => ["/", "/no", "/yes"],
     "roles" => ["guest", "user1", "user2"],
