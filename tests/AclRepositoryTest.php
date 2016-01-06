@@ -29,9 +29,9 @@ class AclRepositoryTest extends PHPUnit_Framework_TestCase
 
     public function setUp ()
     {
-        $this->user1 = new AclRepository('user1', $this->configProvider());
-        $this->user2 = new AclRepository('user2', $this->configProvider());
-        $this->guest = new AclRepository('guest', $this->configProvider());
+        $this->user1 = new AclRepository(['user1'], $this->configProvider());
+        $this->user2 = new AclRepository(['user2'], $this->configProvider());
+        $this->guest = new AclRepository(['guest'], $this->configProvider());
     }
 
     public function configProvider() {

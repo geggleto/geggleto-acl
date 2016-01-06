@@ -22,9 +22,9 @@ class AclRepository
     protected $acl;
 
     /**
-     * @var string
+     * @var array
      */
-    protected $user_id;
+    protected $role;
 
     /**
      * AclRepository constructor.
@@ -47,13 +47,13 @@ class AclRepository
      * ]
      *
      *
-     * @param string $user_id
+     * @param string $role This is the current Role(s) you are testing for
      * @param array  $aclList
      */
-    public function __construct($user_id = '', array $aclList = [])
+    public function __construct(array $role, array $aclList = [])
     {
         $this->acl = new Acl();
-        $this->user_id = $user_id;
+        $this->role = $role;
 
         if (isset($aclList['resources'])) {
             foreach ($aclList['resources'] as $resource) {
@@ -138,7 +138,14 @@ class AclRepository
      * @return \Psr\Http\Message\ResponseInterface
      */
     public function __invoke(ServerRequestInterface $requestInterface, ResponseInterface $responseInterface, callable $next) {
-        if ($this->isAllowed($this->user_id, $requestInterface->getUri()->getPath())) {
+        $allowed = false;
+        foreach ($this->role as $role) {
+            if ($this->isAllowed($role, $requestInterface->getUri()->getPath())) {
+                $allowed = true;
+            }
+        }
+
+        if ($allowed) {
             return $next($requestInterface, $responseInterface);
         } else {
             return $responseInterface->withStatus(401);
