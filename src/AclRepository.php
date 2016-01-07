@@ -140,7 +140,7 @@ class AclRepository
     public function __invoke(ServerRequestInterface $requestInterface, ResponseInterface $responseInterface, callable $next) {
         $allowed = false;
         foreach ($this->role as $role) {
-            if ($this->isAllowed($role, $requestInterface->getUri()->getPath())) {
+            if ($this->isAllowed($role, '/' . ltrim($requestInterface->getUri()->getPath(), '/'))) {
                 $allowed = true;
             }
         }
