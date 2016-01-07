@@ -34,7 +34,7 @@ class AclRepository
      * Then each User can have 1 or more different roles
      * which then correspond to one or more different resources
      *
-     * $aclList = [
+     * $config = [
      * "resources" => [list of resources names]
      * "roles" => [list of role names]
      * "assignments" => [
@@ -47,34 +47,34 @@ class AclRepository
      * ]
      *
      *
-     * @param string $role This is the current Role(s) you are testing for
-     * @param array  $aclList
+     * @param array $role This is the current Role(s) you are testing for
+     * @param array $config
      */
-    public function __construct(array $role, array $aclList = [])
+    public function __construct(array $role, array $config = [])
     {
         $this->acl = new Acl();
         $this->role = $role;
 
-        if (isset($aclList['resources'])) {
-            foreach ($aclList['resources'] as $resource) {
+        if (isset($config['resources'])) {
+            foreach ($config['resources'] as $resource) {
                 $this->acl->addResource($this->makeResource($resource));
             }
         }
 
-        if (isset($aclList['roles'])) {
-            foreach ($aclList['roles'] as $role) {
+        if (isset($config['roles'])) {
+            foreach ($config['roles'] as $role) {
                 $this->acl->addRole($this->makeRole($role));
             }
         }
 
-        if (isset($aclList['assignments'])) {
-            foreach ($aclList['assignments']['allow'] as $role => $resources) {
+        if (isset($config['assignments'])) {
+            foreach ($config['assignments']['allow'] as $role => $resources) {
                 foreach ($resources as $resource) {
                     $this->addAllow($role, $resource);
                 }
             }
 
-            foreach ($aclList['assignments']['deny'] as $role => $resources) {
+            foreach ($config['assignments']['deny'] as $role => $resources) {
                 foreach ($resources as $resource) {
                     $this->addDeny($role, $resource);
                 }
