@@ -1,6 +1,7 @@
 {
   "name": "geggleto/psr7-acl",
   "description": "PSR-7 Zend ACL",
+  "license": "MIT",  
   "authors": [
     {
       "name": "Glenn Eggleton",
