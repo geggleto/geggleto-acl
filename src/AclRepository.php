@@ -188,7 +188,7 @@ class AclRepository
             }
         } catch (InvalidArgumentException $iae) {
             $fn = $this->handler;
-            $allowed = $fn($requestInterface, $this->role, $this);
+            $allowed = $fn($requestInterface, $this);
         }
 
         if ($allowed) {
