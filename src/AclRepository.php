@@ -27,6 +27,14 @@ class AclRepository
      */
     protected $role;
 
+    /**
+     * @return array
+     */
+    public function getRole ()
+    {
+        return $this->role;
+    }
+
 
     protected $handler;
 
@@ -85,11 +93,12 @@ class AclRepository
             }
         }
 
-        $this->handler = function (ServerRequestInterface $requestInterface) {
+        $this->handler = function (ServerRequestInterface $requestInterface, AclRepository $aclRepo) {
+            $this->
             $route = $requestInterface->getAttribute('route');
             if (!empty($route)) {
-                foreach ($this->role as $role) {
-                    if ($this->isAllowed($role, $route->getPattern())) {
+                foreach ($aclRepo->getRole() as $role) {
+                    if ($aclRepo->isAllowed($role, $route->getPattern())) {
                         return true;
                     }
                 }
@@ -179,7 +188,7 @@ class AclRepository
             }
         } catch (InvalidArgumentException $iae) {
             $fn = $this->handler;
-            $allowed = $fn($requestInterface);
+            $allowed = $fn($requestInterface, $this->role, $this);
         }
 
         if ($allowed) {
