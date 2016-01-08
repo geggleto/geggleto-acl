@@ -94,8 +94,11 @@ class AclRepository
         }
 
         $this->handler = function (ServerRequestInterface $requestInterface, AclRepository $aclRepo) {
-            $this->
+
             $route = $requestInterface->getAttribute('route');
+            var_dump($route);
+            var_dump($requestInterface->getAttributes());
+
             if (!empty($route)) {
                 foreach ($aclRepo->getRole() as $role) {
                     if ($aclRepo->isAllowed($role, $route->getPattern())) {
@@ -105,7 +108,6 @@ class AclRepository
             }
             return false;
         };
-        $this->handler->bindTo($this);
 
     }
 
