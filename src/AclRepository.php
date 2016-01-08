@@ -96,6 +96,7 @@ class AclRepository
             }
             return false;
         };
+        $this->handler->bindTo($this);
 
     }
 
