@@ -83,6 +83,13 @@ class AclRepository
     }
 
     /**
+     * @return \Zend\Permissions\Acl\Acl
+     */
+    public function getAcl() {
+        return $this->acl;
+    }
+
+    /**
      * @param string $id
      * @return \Zend\Permissions\Acl\Resource\GenericResource
      */
@@ -139,8 +146,11 @@ class AclRepository
      */
     public function __invoke(ServerRequestInterface $requestInterface, ResponseInterface $responseInterface, callable $next) {
         $allowed = false;
+
+        $route = '/' . ltrim($requestInterface->getUri()->getPath(), '/');
+
         foreach ($this->role as $role) {
-            if ($this->isAllowed($role, '/' . ltrim($requestInterface->getUri()->getPath(), '/'))) {
+            if ($this->isAllowed($role, $route)) {
                 $allowed = true;
             }
         }
