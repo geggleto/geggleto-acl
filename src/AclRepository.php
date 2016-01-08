@@ -11,6 +11,7 @@ namespace Geggleto\Acl;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Exception\InvalidArgumentException;
 use Zend\Permissions\Acl\Role\GenericRole as Role;
 use Zend\Permissions\Acl\Resource\GenericResource as Resource;
 
@@ -25,6 +26,9 @@ class AclRepository
      * @var array
      */
     protected $role;
+
+
+    protected $handler;
 
     /**
      * AclRepository constructor.
@@ -80,6 +84,23 @@ class AclRepository
                 }
             }
         }
+
+        $this->handler = function (ServerRequestInterface $requestInterface) {
+            $route = $requestInterface->getAttribute('route');
+            if (!empty($route)) {
+                foreach ($this->role as $role) {
+                    if ($this->isAllowed($role, $route->getPattern())) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+    }
+
+    public function setCustomHandler(callable $handler) {
+        $this->handler = $handler;
     }
 
     /**
@@ -149,20 +170,15 @@ class AclRepository
 
         $route = '/' . ltrim($requestInterface->getUri()->getPath(), '/');
 
-        foreach ($this->role as $role) {
-            if ($this->isAllowed($role, $route)) {
-                $allowed = true;
-            }
-        }
-
-        //This is likely Slim 3 specific code...
-        $route = $requestInterface->getAttribute('route');
-        if (!empty($route)) {
+        try {
             foreach ($this->role as $role) {
-                if ($this->isAllowed($role, $route->getPattern())) {
+                if ($this->isAllowed($role, $route)) {
                     $allowed = true;
                 }
             }
+        } catch (InvalidArgumentException $iae) {
+            $fn = $this->handler;
+            $allowed = $fn($requestInterface);
         }
 
         if ($allowed) {
