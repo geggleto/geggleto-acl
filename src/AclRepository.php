@@ -155,6 +155,16 @@ class AclRepository
             }
         }
 
+        //This is likely Slim 3 specific code...
+        $route = $requestInterface->getAttribute('route');
+        if (!empty($route)) {
+            foreach ($this->role as $role) {
+                if ($this->isAllowed($role, $route->getPattern())) {
+                    $allowed = true;
+                }
+            }
+        }
+
         if ($allowed) {
             return $next($requestInterface, $responseInterface);
         } else {
