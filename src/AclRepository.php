@@ -96,8 +96,6 @@ class AclRepository
         $this->handler = function (ServerRequestInterface $requestInterface, AclRepository $aclRepo) {
 
             $route = $requestInterface->getAttribute('route');
-            var_dump($route);
-            var_dump($requestInterface->getAttributes());
 
             if (!empty($route)) {
                 foreach ($aclRepo->getRole() as $role) {
