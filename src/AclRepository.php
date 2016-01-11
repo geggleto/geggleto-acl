@@ -169,6 +169,15 @@ class AclRepository
         return $this->acl->isAllowed($role_id, $resource_id);
     }
 
+    public function isAllowedWithRoles($roles = [], $resource_id = '') {
+        foreach ($roles as $role) {
+            if ($this->isAllowed($role, $resource_id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * @param \Psr\Http\Message\ServerRequestInterface $requestInterface
      * @param \Psr\Http\Message\ResponseInterface      $responseInterface
@@ -181,11 +190,7 @@ class AclRepository
         $route = '/' . ltrim($requestInterface->getUri()->getPath(), '/');
 
         try {
-            foreach ($this->role as $role) {
-                if ($this->isAllowed($role, $route)) {
-                    $allowed = true;
-                }
-            }
+            $allowed = $this->isAllowedWithRoles($this->role, $route);
         } catch (InvalidArgumentException $iae) {
             $fn = $this->handler;
             $allowed = $fn($requestInterface, $this);
