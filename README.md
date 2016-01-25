@@ -70,3 +70,42 @@ return [
 ```
 
 If this does not fit your usage, feel free to override the default handler by setting your own via `setHandler(callable)`
+
+## Middleware
+You can use the repo class directly which contains this code block... or modify this code block to suit your needs.
+```php
+
+$app->add(function (Request $request, Response $res, $next) {
+    /** @var $aclRepo AclRepository */
+    $aclRepo = $this->get(AclRepository::class);
+    $allowed = false;
+
+    $route = '/' . ltrim($request->getUri()->getPath(), '/');
+    var_dump($route);
+
+    try {
+        $allowed = $aclRepo->isAllowedWithRoles($aclRepo->getRole(), $route);
+    } catch (InvalidArgumentException $iae) {
+        $fn = function (ServerRequestInterface $requestInterface, AclRepository $aclRepo) {
+
+            $route = $requestInterface->getAttribute('route');
+            if (!empty($route)) {
+                foreach ($aclRepo->getRole() as $role) {
+                    if ($aclRepo->isAllowed($role, $route->getPattern())) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        };
+
+        $allowed = $fn($request, $aclRepo);
+    }
+
+    if ($allowed) {
+        return $next($request, $res);
+    } else {
+        return $res->withStatus(401);
+    }
+});
+```
