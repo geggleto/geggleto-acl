@@ -35,7 +35,14 @@ class AclRepository
         return $this->role;
     }
 
+    /**
+     * @var array
+     */
+    protected $whiteList;
 
+    /**
+     * @var \Closure
+     */
     protected $handler;
 
     /**
@@ -66,6 +73,7 @@ class AclRepository
     {
         $this->acl = new Acl();
         $this->role = $role;
+        $this->whiteList = [];
 
         if (isset($config['resources'])) {
             foreach ($config['resources'] as $resource) {
@@ -189,11 +197,20 @@ class AclRepository
 
         $route = '/' . ltrim($requestInterface->getUri()->getPath(), '/');
 
-        try {
-            $allowed = $this->isAllowedWithRoles($this->role, $route);
-        } catch (InvalidArgumentException $iae) {
-            $fn = $this->handler;
-            $allowed = $fn($requestInterface, $this);
+        //check to see if the its in the white list
+        foreach ($this->whiteList as $whiteUri) {
+            if (strpos($route, $whiteUri) !== false) {
+                $allowed = true;
+            }
+        }
+
+        if (!$allowed) {
+            try {
+                $allowed = $this->isAllowedWithRoles($this->role, $route);
+            } catch (InvalidArgumentException $iae) {
+                $fn = $this->handler;
+                $allowed = $fn($requestInterface, $this);
+            }
         }
 
         if ($allowed) {
@@ -202,4 +219,14 @@ class AclRepository
             return $responseInterface->withStatus(401);
         }
     }
+
+    /**
+     * @param string $whiteListItem
+     */
+    public function addWhiteListUri($whiteListItem = '')
+    {
+        $this->whiteList[] = $whiteListItem;
+    }
+
+
 }
