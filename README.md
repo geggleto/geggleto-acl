@@ -4,6 +4,20 @@
 Provides a ACL repository and Middleware using Zend/Permissions/Acl library
 PSR-7 Compliant
 
+- Blog post on this package
+- http://bolt.tamingtheelephpant.com/page/psr-7-permissions
+
+# How it works
+- Resources are end-points
+- Roles are a group of resources
+- You can either allow or deny those roles.
+
+The roles a user has are loaded into the AclRepo on every request. I suggest loading them into a session variable rather than pulling them from storage everytime (usage case depending).
+
+The current route is then inspected and compared to the list of accessable resources in a middleware. a 401 is returned if a user is not allowed. If the user is allowed the application is allowed to continue.
+
+By default no message body is provided on the 401, and if you require a page to be rendered then you will need to write your own middleware.
+
 # Usage Example
 
 ```php
@@ -70,3 +84,41 @@ return [
 ```
 
 If this does not fit your usage, feel free to override the default handler by setting your own via `setHandler(callable)`
+
+## Middleware
+You can use the repo class directly which contains this code block... or modify this code block to suit your needs.
+```php
+
+$app->add(function (Request $request, Response $res, $next) {
+    /** @var $aclRepo AclRepository */ 
+    $aclRepo = $this->get(AclRepository::class); //In Slim 3 the container is bound to function definitions
+    $allowed = false; // We assume that the user cannot access the route
+
+    $route = '/' . ltrim($request->getUri()->getPath(), '/'); //We construct our path
+
+    try { //Check here... This will pass when a route is simple and there is no route parameters
+        $allowed = $aclRepo->isAllowedWithRoles($aclRepo->getRole(), $route);
+    } catch (InvalidArgumentException $iae) { //This is executed in cases where there is a route parameters... /user/{id:} 
+        $fn = function (ServerRequestInterface $requestInterface, AclRepository $aclRepo) {
+            //This will likely only work in Slim 3... This requires the determineRouteBeforeAppMiddleware => true to be set in the container
+            $route = $requestInterface->getAttribute('route'); // Grab the route to get the pattern
+            if (!empty($route)) {
+                foreach ($aclRepo->getRole() as $role) {
+                    if ($aclRepo->isAllowed($role, $route->getPattern())) { // check to see fi the user can access the pattern
+                        return true; //Is allowed
+                    }
+                }
+            }
+            return false;
+        };
+
+        $allowed = $fn($request, $aclRepo); // Execute the fail-safe
+    }
+
+    if ($allowed) {
+        return $next($request, $res);
+    } else {
+        return $res->withStatus(401); //Is not allowed. if you need to render a template then do that.
+    }
+});
+```
