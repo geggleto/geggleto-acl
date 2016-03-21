@@ -180,5 +180,15 @@ class AclRepositoryTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(200, $output->getStatusCode());
     }
 
+    public function testAclRepoGuest_Whitelist() {
+        $reqRoot = $this->mockRequest('/yes');
+        $res = $this->mockResponse(401);
+
+        $acl = $this->user2;
+        $acl->addWhiteListUri('/yes');
+        $output = $acl($reqRoot, $res, $this->getClosure());
+
+        $this->assertEquals(200, $output->getStatusCode());
+    }
 
 }

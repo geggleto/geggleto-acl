@@ -122,3 +122,19 @@ $app->add(function (Request $request, Response $res, $next) {
     }
 });
 ```
+
+
+## White listing
+You may add a URI path for white listing. The whitelisting is based upon `strpos()` so you may use a URI fragment to whitelist a whole class of URIs.
+With this it is possible to whitelist URIs by accident.
+
+Example:
+```php
+
+$acl = new Acl();
+$acl->addWhitelistItem('/api');
+```
+
+In this example any URI with `/api` will be whitelisted. 
+- `/api/*`
+- `/myexample/api/*`
