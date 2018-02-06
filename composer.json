@@ -1,5 +1,5 @@
 {
-  "name": "geggleto/psr7-acl",
+  "name": "lotharthesavior/psr7-acl",
   "description": "PSR-7 Zend ACL",
   "keywords": ["acl","permissions","slim","psr-7","psr7","zend"],
   "license": "MIT",  
