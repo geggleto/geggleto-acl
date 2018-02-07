@@ -77,6 +77,10 @@ class AclRepository
 
         if (isset($config['resources'])) {
             foreach ($config['resources'] as $resource) {
+                if ($this->acl->hasResource($this->makeResource($resource))) {
+                    continue;
+                }
+                
                 $this->acl->addResource($this->makeResource($resource));
             }
         }
