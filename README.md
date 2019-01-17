@@ -5,7 +5,7 @@ Provides a ACL repository and Middleware using Zend/Permissions/Acl library
 PSR-7 Compliant
 
 - Blog post on this package
-- http://bolt.tamingtheelephpant.com/page/psr-7-permissions
+- https://glenneggleton.com/page/psr-7-permissions
 
 # How it works
 - Resources are end-points
